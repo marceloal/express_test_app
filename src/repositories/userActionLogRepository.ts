@@ -39,7 +39,7 @@ export async function createUserActionLog(params: {
   const metadata = params.metadata ?? {};
 
   const result = await pool.query<UserActionLogRow>(
-    `INSERT INTO user_action_logs (id, user_id, action, metadata)
+    `INSERT INTO usuario_logs (id, user_id, action, metadata)
      VALUES ($1, $2, $3, $4)
      RETURNING id, user_id, action, metadata, created_at`,
     [id, params.userId, params.action, metadata],
@@ -47,3 +47,4 @@ export async function createUserActionLog(params: {
 
   return mapRowToUserActionLog(result.rows[0]);
 }
+

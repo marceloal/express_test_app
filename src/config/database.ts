@@ -8,9 +8,33 @@ const pool = new Pool({
   connectionString: env.databaseUrl
 })
 
-async function ensureSchema(): Promise<void> {
+async function migrateLegacyTables(): Promise<void> {
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
+    DO $$
+    BEGIN
+      BEGIN
+        ALTER TABLE IF EXISTS users RENAME TO usuarios;
+      EXCEPTION
+        WHEN duplicate_table THEN
+          NULL;
+      END;
+
+      BEGIN
+        ALTER TABLE IF EXISTS user_action_logs RENAME TO usuario_logs;
+      EXCEPTION
+        WHEN duplicate_table THEN
+          NULL;
+      END;
+    END
+    $$;
+  `)
+}
+
+async function ensureSchema(): Promise<void> {
+  await migrateLegacyTables()
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS usuarios (
       id UUID PRIMARY KEY,
       name TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
@@ -19,9 +43,9 @@ async function ensureSchema(): Promise<void> {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
 
-    CREATE TABLE IF NOT EXISTS user_action_logs (
+    CREATE TABLE IF NOT EXISTS usuario_logs (
       id UUID PRIMARY KEY,
-      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      user_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
       action TEXT NOT NULL,
       metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

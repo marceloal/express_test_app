@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 /dist/
+/bin/
 
 # Test coverage reports
 /coverage/
@@ -20,3 +21,4 @@ pnpm-debug.log*
 # OS artifacts
 .DS_Store
 Thumbs.db
+

@@ -31,7 +31,7 @@ JWT_SECRET=sua-chave-super-secreta
 Se `DATABASE_URL` ou `JWT_SECRET` não forem informados, valores padrão são utilizados apenas para desenvolvimento. Defina chaves seguras em produção.
 
 ### Banco de dados
-Durante o startup, `connectToDatabase` testa a conexão e garante a criação das tabelas `users` e `user_action_logs`. Verifique se o usuário do banco possui permissão para executar `CREATE TABLE`.
+Durante o startup, `connectToDatabase` testa a conexão e garante a criação das tabelas `usuarios` e `usuario_logs`. Verifique se o usuário do banco possui permissão para executar `CREATE TABLE`.
 
 ## Scripts disponíveis
 - `npm run dev`: executa a API com recarga automática via ts-node-dev
@@ -50,7 +50,7 @@ Durante o startup, `connectToDatabase` testa a conexão e garante a criação da
 ### Fluxo de autenticação
 - As senhas são armazenadas com hash utilizando `bcryptjs`.
 - Tokens JWT possuem expiração de 1 hora e são assinados com `JWT_SECRET`.
-- Ao realizar login, um registro é criado em `user_action_logs` com metadados como IP e user-agent.
+- Ao realizar login, um registro é criado em `usuario_logs` com metadados como IP e user-agent.
 - A rota `/profile` utiliza o middleware `authenticate` para validar o token e disponibilizar `req.user`.
 
 ### Exemplos de requisições

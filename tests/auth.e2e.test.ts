@@ -10,7 +10,7 @@ import {
 const pool = getDatabasePool()
 
 async function resetDatabase(): Promise<void> {
-  await pool.query('TRUNCATE TABLE users;')
+  await pool.query('TRUNCATE TABLE usuario_logs, usuarios;')
 }
 
 describe('Fluxo de autenticacao', () => {
@@ -99,3 +99,4 @@ describe('Fluxo de autenticacao', () => {
     })
   })
 })
+

@@ -32,7 +32,7 @@ export async function createUser(params: Omit<User, 'id'>): Promise<User> {
   const email = params.email.toLowerCase();
 
   const result = await pool.query<UserRow>(
-    `INSERT INTO users (id, name, email, password_hash)
+    `INSERT INTO usuarios (id, name, email, password_hash)
      VALUES ($1, $2, $3, $4)
      RETURNING id, name, email, password_hash`,
     [id, params.name, email, params.passwordHash],
@@ -44,7 +44,7 @@ export async function createUser(params: Omit<User, 'id'>): Promise<User> {
 export async function findUserByEmail(email: string): Promise<User | null> {
   const result = await pool.query<UserRow>(
     `SELECT id, name, email, password_hash
-     FROM users
+     FROM usuarios
      WHERE email = $1
      LIMIT 1`,
     [email.toLowerCase()],
@@ -56,7 +56,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
 export async function findUserById(id: string): Promise<User | null> {
   const result = await pool.query<UserRow>(
     `SELECT id, name, email, password_hash
-     FROM users
+     FROM usuarios
      WHERE id = $1
      LIMIT 1`,
     [id],
@@ -64,3 +64,4 @@ export async function findUserById(id: string): Promise<User | null> {
 
   return result.rows[0] ? mapRowToUser(result.rows[0]) : null;
 }
+
