@@ -1,0 +1,30 @@
+[user]
+  name = Seu Nome
+  email = seu.email@example.com
+
+[core]
+  autocrlf = input
+  editor = code --wait
+  hooksPath = .githooks
+
+[init]
+  defaultBranch = main
+
+[pull]
+  rebase = false
+
+[push]
+  default = current
+
+[fetch]
+  prune = true
+
+[color]
+  ui = auto
+
+[alias]
+  st = status -sb
+  co = checkout
+  br = branch
+  cm = commit
+  lg = log --oneline --graph --decorate --all

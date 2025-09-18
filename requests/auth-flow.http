@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:3000
+@userEmail = rest@teste.com
+@userPassword = senha-super-secreta
+@token = ''
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Registro de novo usu?rio
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Usuario REST",
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}
+
+### Login com o usu?rio rec?m-criado
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}
+
+### Acessar rota protegida com token do login
+GET {{baseUrl}}/profile
+Authorization: Bearer {{login.response.body.token}}
+
+### Tentativa de registro duplicado (deve falhar)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Usu?rio REST duplicado",
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}
